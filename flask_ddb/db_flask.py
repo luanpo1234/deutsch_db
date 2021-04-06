@@ -7,6 +7,9 @@ import json_reader
 
 app = Flask(__name__)
 
+jtest = json_reader.get_json(json_reader.JSON_PATH)
+df, error_indexes = json_reader.create_df(jtest)
+
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -17,7 +20,7 @@ def suche():
         level, gram_thema, thema = request.form["lvl"].upper(), [x.strip().lower() for x in request.form["grm"].split(",")], [x.strip().lower() for x in request.form["thm"].split(",")] #TODO aqui e abaixo: função pros processamentos das strings
         test_search = {"level": level, "grammar": gram_thema, "keywords":thema}
         print("thema", thema)
-        df_res = json_reader.search(json_reader.df, test_search)
+        df_res = json_reader.search(df, test_search)
         str_df_res = json_reader.df_to_html_pretty(df_res)
         return f"Ergebnis: {str_df_res}"
     else:
@@ -28,8 +31,8 @@ def einfuegen():
     if request.method == "POST":
         link, level, gram_thema, thema = request.form["lnk"], request.form["lvl"].upper(), [x.strip().lower() for x in request.form["grm"].split(",")], [x.strip().lower() for x in request.form["thm"].split(",")]
         entry = {"link": link, "level": level, "grammar": gram_thema, "keywords":thema}
-        json_new, msg = json_reader.add_entry(json_reader.jtest, entry)
-        str_df_res = json_reader.df_to_html_pretty(json_reader.df)
+        json_new, msg = json_reader.add_entry(jtest, entry)
+        str_df_res = json_reader.df_to_html_pretty(df)
         return f"{msg} <br /> {str_df_res}"
     else:
         return render_template("einfuegen.html")

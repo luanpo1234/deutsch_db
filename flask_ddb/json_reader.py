@@ -15,8 +15,10 @@ GRAM_KEYWORDS = ["dativ", "akkusativ", "präpositionen", "konjugation", "verben"
 LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]
 
 
-with open(JSON_PATH) as json_file:
-    jtest = json.load(json_file)
+def get_json(json_path):
+    with open(JSON_PATH) as json_file:
+        jtest = json.load(json_file)
+    return jtest
 
 def check_entry(entry, atts=["link", "keywords", "level", "grammar"]):
     """
@@ -143,36 +145,9 @@ def df_to_html_pretty(df):
 #res_df = df.loc[(df["level"]==search_terms_["level"]) & (search_terms_["grammar"][0] in df["grammar"].iloc[1])]
 # res_df = df.loc[(df["level"]==search_terms["level"]) & (len(df["grammar"].apply(lambda x: compare(x, search_terms["grammar"]))))]
 
-df, error_indexes = create_df(jtest)
-test_search = {"level": "A1", "grammar": ["dativ"], "keywords":["arbeit"]}
-df2 = search(df, test_search)
+#test_search = {"level": "A1", "grammar": ["dativ"], "keywords":["arbeit"]}
+#df2 = search(df, test_search)
 
-# {
-#     1: {
-        
-#     "link": "https://www.google.com",
-#     "keywords":["schule",
-#                 "haushalt",
-#                 # "blabla"
-#         ],
-#     "grammar": ["dativ",
-#                 "präpositionen"],
-#     "level": "A1",
-#     },
-#         2: {
-        
-#     "link": "https://www.moodle.com",
-#     "keywords":["schule",
-#                 "arbeit",
-#                 # "blabla"
-#         ],
-#     "grammar": ["dativ",
-#                 "präpositionen"],
-#     "level": "C2",
-#     },
-#     }
-
-print(df)
 #test_search = {"level": "A1", "grammar": ["konjugation"], "keywords":[]}
 #df2 = search(df, test_search)
 #print(df2)
