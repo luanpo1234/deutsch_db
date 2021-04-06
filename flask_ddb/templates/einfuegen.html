@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Einfügen{% endblock %}
+{% block content %}
+<h1>Neuer Eintrag einfügen</h1>
+<form action="#" method="post">
+	<p>Link:</p>
+	<p><input type="text" name="lnk" value="https://www.MUSTER.de"/></p>
+	<p>Level:</p>
+	<p><input type="text" name="lvl" /></p>
+	<p>Grammatisches Thema (Kommagetrennt):</p>
+	<p><input type="text" name="grm" /></p>
+	<p>Allgemeines Thema (Kommagetrennt):</p>
+	<p><input type="text" name="thm" /></p>
+	<p><input type="submit" value="Einfügen" /></p>
+	</form>
+{% endblock %}

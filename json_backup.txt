@@ -1,0 +1,24 @@
+{
+   "1":{
+      "link":"https://www.google.com",
+      "keywords":[
+         "schule",
+         "haushalt"
+      ],
+      "grammar":[
+         "dativ"
+      ],
+      "level":"A1"
+   },
+   "2":{
+      "link":"https://www.moodle.com",
+      "keywords":[
+         "schule",
+         "arbeit"
+      ],
+      "grammar":[
+         "dativ"
+      ],
+      "level":"C2"
+   }
+}
