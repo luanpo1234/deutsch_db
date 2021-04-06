@@ -129,19 +129,19 @@ def search(df, search_terms):
     def compare(a,b):   #TODO: renomear função
         a_ = set(a)
         b_ = set(b)
-        print(a_ & b_)
         return len(a_ & b_) != 0
     
     search_terms_ = search_terms.copy()
-    res_df = df.loc[(df["level"]==search_terms["level"]) & (df["grammar"].apply(lambda x: compare(x, search_terms["grammar"])))]
+    #TODO: Versão meio gambiarra pq db.query(), pd.eval() não funcionam com lambda
+    res_df = df.loc[(df["level"]==search_terms["level"]) & (df["grammar"].apply(lambda x: compare(x, search_terms["grammar"]))) & (df["keywords"].apply(lambda x: compare(x, search_terms["keywords"])))]
     return res_df
 
 #res_df = df.loc[(df["level"]==search_terms_["level"]) & (search_terms_["grammar"][0] in df["grammar"].iloc[1])]
 # res_df = df.loc[(df["level"]==search_terms["level"]) & (len(df["grammar"].apply(lambda x: compare(x, search_terms["grammar"]))))]
 
 df, error_indexes = create_df(jtest)
-# test_search = {"level": "A1", "grammar": ["dativ"], "keywords":["arbeit"]}
-# df2 = search(df, test_search)
+test_search = {"level": "A1", "grammar": ["dativ"], "keywords":["arbeit"]}
+df2 = search(df, test_search)
 
 # {
 #     1: {
@@ -169,6 +169,6 @@ df, error_indexes = create_df(jtest)
 #     }
 
 print(df)
-test_search = {"level": "A1", "grammar": ["konjugation"], "keywords":[]}
-df2 = search(df, test_search)
+#test_search = {"level": "A1", "grammar": ["konjugation"], "keywords":[]}
+#df2 = search(df, test_search)
 #print(df2)
