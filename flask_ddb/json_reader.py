@@ -34,7 +34,8 @@ def check_entry(entry, atts=["link", "keywords", "level", "grammar"]):
         print("!!! Broken link {}".format(entry[atts[0]])) #TODO: Raise error
         errors=True
 
-    # Check if keywords are valid 
+    # Check if keywords are valid
+    """ not checking keywords-grammar for now
     for kw in entry[atts[1]]:
         if kw.lower() not in KEYWORDS:
             msg += "!!! Invalid keyword {}.".format(kw) + "<br />"
@@ -53,6 +54,7 @@ def check_entry(entry, atts=["link", "keywords", "level", "grammar"]):
         else:
             msg += "Grammar keyword OK." + "<br />"
             print("Grammar keyword OK.")
+    """
     
     # Check if level is valid
     if entry[atts[2]] not in LEVELS:
@@ -167,6 +169,6 @@ df, error_indexes = create_df(jtest)
 #     }
 
 print(df)
-#test_search = {"level": "A1", "grammar": ["konjugation"], "keywords":[]}
-#df2 = search(df, test_search)
+test_search = {"level": "A1", "grammar": ["konjugation"], "keywords":[]}
+df2 = search(df, test_search)
 #print(df2)
