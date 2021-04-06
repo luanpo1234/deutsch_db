@@ -15,7 +15,7 @@ def home():
 @app.route("/suche/", methods=["POST", "GET"])
 def suche():
     if request.method == "POST":
-        level, gram_thema, thema = request.form["lvl"], request.form["grm"].split(","), request.form["thm"].split(",")
+        level, gram_thema, thema = request.form["lvl"].upper(), [x.strip().lower() for x in request.form["grm"].split(",")], [x.strip().lower() for x in request.form["thm"]] #TODO aqui e abaixo: função pros processamentos das strings
         test_search = {"level": level, "grammar": gram_thema, "keywords":thema}
         df_res = json_reader.search(json_reader.df, test_search)
         str_df_res = df_res.to_html()
@@ -26,7 +26,7 @@ def suche():
 @app.route("/einfuegen/", methods=["POST", "GET"])
 def einfuegen():
     if request.method == "POST":
-        link, level, gram_thema, thema = request.form["lnk"], request.form["lvl"], request.form["grm"].split(","), request.form["thm"].split(",")
+        link, level, gram_thema, thema = request.form["lnk"], request.form["lvl"].upper(), [x.strip().lower() for x in request.form["grm"].split(",")], [x.strip().lower() for x in request.form["thm"]]
         entry = {"link": link, "level": level, "grammar": gram_thema, "keywords":thema}
         json_new, msg = json_reader.add_entry(json_reader.jtest, entry)
         str_df_res = json_reader.df.to_html()

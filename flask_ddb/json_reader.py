@@ -9,13 +9,13 @@ import requests
 from requests.exceptions import ConnectionError
 import json
 
-PATH = "flask_ddb\json.json"
+JSON_PATH = "flask_ddb\json.json"
 KEYWORDS = ["schule", "arbeit", "haushalt", "none"]
 GRAM_KEYWORDS = ["dativ", "akkusativ", "präpositionen", "konjugation", "verben"]
 LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]
 
 
-with open(PATH) as json_file:
+with open(JSON_PATH) as json_file:
     jtest = json.load(json_file)
 
 def check_entry(entry, atts=["link", "keywords", "level", "grammar"]):
@@ -104,7 +104,7 @@ def add_entry(json_dict, entry): #, df):
     #entry["index"] = int(new_key)
     #df.append(pd.DataFrame(entry).set_index("index"))
     #Não tá atualizando o df, não sei pq
-    with open(PATH, 'w') as outfile:
+    with open(JSON_PATH, 'w') as outfile:
         json.dump(json_dict, outfile)
     return json_dict, error_msg#, df
 
