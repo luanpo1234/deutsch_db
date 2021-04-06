@@ -132,7 +132,6 @@ def search(df, search_terms):
         return len(a_ & b_) != 0
     
     search_terms_ = search_terms.copy()
-    #TODO: Versão meio gambiarra pq db.query(), pd.eval() não funcionam com lambda
     res_df = df.loc[(df["level"]==search_terms["level"]) & (df["grammar"].apply(lambda x: compare(x, search_terms["grammar"]))) & (df["keywords"].apply(lambda x: compare(x, search_terms["keywords"])))]
     return res_df
 
