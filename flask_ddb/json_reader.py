@@ -135,6 +135,11 @@ def search(df, search_terms):
     res_df = df.loc[(df["level"]==search_terms["level"]) & (df["grammar"].apply(lambda x: compare(x, search_terms["grammar"]))) & (df["keywords"].apply(lambda x: compare(x, search_terms["keywords"])))]
     return res_df
 
+def df_to_html_pretty(df):
+    df_out = df
+    #TODO: Não tá interpretando as tags HTML, tenta depois de novo
+    #df_out["link"] = df_out["link"].apply(lambda x: "<a href = " + x + ">" + x + "</a>")
+    return df_out.to_html(render_links=True)
 #res_df = df.loc[(df["level"]==search_terms_["level"]) & (search_terms_["grammar"][0] in df["grammar"].iloc[1])]
 # res_df = df.loc[(df["level"]==search_terms["level"]) & (len(df["grammar"].apply(lambda x: compare(x, search_terms["grammar"]))))]
 
