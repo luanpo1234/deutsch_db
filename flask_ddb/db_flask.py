@@ -15,8 +15,9 @@ def home():
 @app.route("/suche/", methods=["POST", "GET"])
 def suche():
     if request.method == "POST":
-        level, gram_thema, thema = request.form["lvl"].upper(), [x.strip().lower() for x in request.form["grm"].split(",")], [x.strip().lower() for x in request.form["thm"]] #TODO aqui e abaixo: função pros processamentos das strings
+        level, gram_thema, thema = request.form["lvl"].upper(), [x.strip().lower() for x in request.form["grm"].split(",")], [x.strip().lower() for x in request.form["thm"].split(",")] #TODO aqui e abaixo: função pros processamentos das strings
         test_search = {"level": level, "grammar": gram_thema, "keywords":thema}
+        print("thema", thema)
         df_res = json_reader.search(json_reader.df, test_search)
         str_df_res = df_res.to_html()
         return f"Ergebnis: {str_df_res}"
