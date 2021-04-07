@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Suche{% endblock %}
+{% block content %}
+<h1>Ergebnis</h1>
+<div>
+    {{content|safe}}
+    <p><form action="../einfuegen/"><input type="submit" value="Neuer Eintrag Einfügen"/></form>
+        <form action="../suche"><input type="submit" value="Neue Suche"/></form>
+        </p>
+	</div>
+{% endblock %}

@@ -24,7 +24,7 @@ def suche():
         df, error_indexes = json_reader.create_df(jtemp)
         df_res = json_reader.search(df, test_search)
         str_df_res = json_reader.df_to_html_pretty(df_res)
-        return f"Ergebnis: {str_df_res}"
+        return render_template("result.html", content=str_df_res)
     else:
         return render_template("suche.html")
     
@@ -37,7 +37,7 @@ def einfuegen():
         json_new, msg = json_reader.add_entry(jtemp, entry)
         df, error_indexes = json_reader.create_df(jtemp)
         str_df_res = json_reader.df_to_html_pretty(df)
-        return f"{msg} <br /> {str_df_res}"
+        return render_template("result.html", content=msg + "<br />" + str_df_res)
     else:
         return render_template("einfuegen.html")
 
