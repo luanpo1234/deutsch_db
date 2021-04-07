@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Home Page{% endblock%}
 {% block content %}
-<h1>Deutsch DB</h1>
+<h1>DAF-Datenbank</h1>
+<div>
+    <p>Willkommen in die Datenbank für DAF-Lehrressourcen.</p>
+    <p>Was möchten Sie tun?</p>
+    <p><form action="einfuegen/"><input type="submit" value="Neuer Eintrag Einfügen"/></form>
+        <form action="suche/"><input type="submit" value="Suchen" action="suche.html"/></form>
+        </p>
+    </div>
 {% endblock%}

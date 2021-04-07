@@ -2,15 +2,17 @@
 {% block title %}Einfügen{% endblock %}
 {% block content %}
 <h1>Neuer Eintrag einfügen</h1>
+<div class="test">
 <form action="#" method="post">
 	<p>Link:</p>
-	<p><input type="text" name="lnk" value="https://www.MUSTER.de"/></p>
+	<p><input type="text" name="lnk" value="http://"></p>
 	<p>Level:</p>
-	<p><input type="text" name="lvl" /></p>
+	<p><input type="text" name="lvl" placeholder="Z.B. A1, C2"/></p>
 	<p>Grammatisches Thema (Kommagetrennt):</p>
-	<p><input type="text" name="grm" /></p>
+	<p><input type="text" name="grm" placeholder="Z.B. dativ, Modalverben"/></p>
 	<p>Allgemeines Thema (Kommagetrennt):</p>
-	<p><input type="text" name="thm" /></p>
+	<p><input type="text" name="thm" placeholder="Z.B. Essen, Reisen"/></p>
 	<p><input type="submit" value="Einfügen" /></p>
 	</form>
+	</div>
 {% endblock %}

@@ -1,13 +1,16 @@
 {% extends "base.html" %}
 {% block title %}Suche{% endblock %}
 {% block content %}
+<h1>Suchbegriffe eingeben</h1>
+<div>
 <form action="#" method="post">
 	<p>Level:</p>
-	<p><input type="text" name="lvl" /></p>
+	<p><input type="text" name="lvl" placeholder="Z.B. A1, C2"/></p>
 	<p>Grammatisches Thema:</p>
-	<p><input type="text" name="grm" /></p>
+	<p><input type="text" name="grm" placeholder="Z.B. dativ, Modalverben"/></p>
 	<p>Allgemeines Thema:</p>
-	<p><input type="text" name="thm" /></p>
+	<p><input type="text" name="thm" placeholder="Z.B. Essen, Reisen"/></p>
 	<p><input type="submit" value="Suchen" /></p>
 	</form>
+	</div>
 {% endblock %}
