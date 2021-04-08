@@ -161,8 +161,6 @@ def search(df, search_terms):
         print(query)
         return query
 
-    #TODO: pra excluir termos vazios, mas vai exigir muitas mudanças, mexe com isso depois
-    #search_terms_ = {k:v for k, v in search_terms.items() if v != [""]}
     search_terms_ = search_terms.copy()
     print(search_terms_)
     df_search_ = check_match(df, search_terms_, ["level", "keywords", "grammar"])
