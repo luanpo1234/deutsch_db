@@ -17,8 +17,8 @@ LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]
 
 def get_json(json_path):
     with open(JSON_PATH) as json_file:
-        jtest = json.load(json_file)
-    return jtest
+        json_dict = json.load(json_file)
+    return json_dict
 
 def check_entry(entry, atts=["link", "keywords", "level", "grammar"]):
     """
@@ -59,6 +59,7 @@ def check_entry(entry, atts=["link", "keywords", "level", "grammar"]):
     """
     
     # Check if level is valid
+    """
     if entry[atts[2]] not in LEVELS:
         msg += "!!! Invalid level {}.".format(entry[atts[2]]) + "<br />"
         print("!!! Invalid level {}.".format(entry[atts[2]])) #TODO: Raise error
@@ -66,18 +67,23 @@ def check_entry(entry, atts=["link", "keywords", "level", "grammar"]):
     else:
         msg += "Levels OK. <br />"
         print("Levels OK.")
+    """
     if errors == False:
         msg += "No problems found." + "<br />"
         print("No problems found.")
     return not errors, msg
-        
-# check_entry(jtest[1])
+    
 
 def create_df(json_dict, validate_entries=False):
     """
     Creates pandas DataFrame with the json entries that don't have errors.
     Returns pandas DF and list of error indexes.
     """
+    def exclude_empty_str(lst):
+        """
+        Returns list without empty strings.
+        """
+        return [el for el in lst if el != ""]
     japproved = {}
     error_indexes = []
     for key in json_dict:
@@ -92,6 +98,10 @@ def create_df(json_dict, validate_entries=False):
             japproved[key] = json_dict[key]
     df = pd.DataFrame(japproved)
     df = df.transpose() #TODO: deve ter um jeito melhor de resolver isso
+    #Making sure there are no empty strings:
+    df['level'] = df['level'].apply(lambda l: exclude_empty_str(l))
+    df['keywords'] = df['keywords'].apply(lambda l: exclude_empty_str(l))
+    df['grammar'] = df['grammar'].apply(lambda l: exclude_empty_str(l))
     return df, error_indexes
 
 def add_entry(json_dict, entry): #, df):
@@ -133,15 +143,39 @@ def search(df, search_terms):
         b_ = set(b)
         return len(a_ & b_) != 0
     
+    def check_match(df, search_terms, attrs):
+        """
+        Adds column of boolean to DF with matches for each attribute.
+        """
+        df_ = df.copy()
+        for attr in attrs:
+            df_.loc[df_[attr].apply(lambda x: compare(x, search_terms[attr])), attr+"_match"]=True
+            df_.loc[~df_[attr].apply(lambda x: compare(x, search_terms[attr])), attr+"_match"]=False
+        print(df_)
+        return df_
+
+    def build_query(df_search, attrs=["level", "keywords", "grammar"], conns=['&','|']):
+        query = ""
+        #TODO: placeholder, depois faz o método pra montar os queries
+        query = "(" + attrs[0] + '_match==True) & (' + attrs[1] + '_match==True) & (' + attrs[2] + '_match==True)'
+        print(query)
+        return query
+
+    #TODO: pra excluir termos vazios, mas vai exigir muitas mudanças, mexe com isso depois
+    #search_terms_ = {k:v for k, v in search_terms.items() if v != [""]}
     search_terms_ = search_terms.copy()
-    res_df = df.loc[(df["level"]==search_terms["level"]) & ((df["grammar"].apply(lambda x: compare(x, search_terms["grammar"]))) |   (df["keywords"].apply(lambda x: compare(x, search_terms["keywords"]))))]
+    print(search_terms_)
+    df_search_ = check_match(df, search_terms_, ["level", "keywords", "grammar"])
+    query = build_query(df_search_)
+    res_df = df_search_.query(query).loc[:, df.columns]
+    #res_df = df.loc[(df["level"]==search_terms["level"]) & ((df["grammar"].apply(lambda x: compare(x, search_terms["grammar"]))) | (df["keywords"].apply(lambda x: compare(x, search_terms["keywords"]))))]
     return res_df
 
 def df_to_html_pretty(df):
-    df_out = df
+    df_out = df.to_html(render_links=True)
     #TODO: Não tá interpretando as tags HTML, tenta depois de novo
     #df_out["link"] = df_out["link"].apply(lambda x: "<a href = " + x + ">" + x + "</a>")
-    return df_out.to_html(render_links=True)
+    return df_out
 #res_df = df.loc[(df["level"]==search_terms_["level"]) & (search_terms_["grammar"][0] in df["grammar"].iloc[1])]
 # res_df = df.loc[(df["level"]==search_terms["level"]) & (len(df["grammar"].apply(lambda x: compare(x, search_terms["grammar"]))))]
 

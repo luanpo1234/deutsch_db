@@ -7,9 +7,6 @@ import json_reader
 
 app = Flask(__name__)
 
-JTEST = json_reader.get_json(json_reader.JSON_PATH)
-DF, ERROR_INDEXES = json_reader.create_df(JTEST)
-
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -17,9 +14,8 @@ def home():
 @app.route("/suche/", methods=["POST", "GET"])
 def suche():
     if request.method == "POST":
-        level, gram_thema, thema = request.form["lvl"].upper(), [x.strip().lower() for x in request.form["grm"].split(",")], [x.strip().lower() for x in request.form["thm"].split(",")] #TODO aqui e abaixo: função pros processamentos das strings
+        level, gram_thema, thema = [x.strip().upper() for x in request.form["lvl"].split(",")], [x.strip().lower() for x in request.form["grm"].split(",")], [x.strip().lower() for x in request.form["thm"].split(",")] #TODO aqui e abaixo: função pros processamentos das strings
         test_search = {"level": level, "grammar": gram_thema, "keywords":thema}
-        print("thema", thema)
         jtemp = json_reader.get_json(json_reader.JSON_PATH)
         df, error_indexes = json_reader.create_df(jtemp)
         df_res = json_reader.search(df, test_search)
@@ -31,7 +27,7 @@ def suche():
 @app.route("/einfuegen/", methods=["POST", "GET"])
 def einfuegen():
     if request.method == "POST":
-        link, level, gram_thema, thema = request.form["lnk"], request.form["lvl"].upper(), [x.strip().lower() for x in request.form["grm"].split(",")], [x.strip().lower() for x in request.form["thm"].split(",")]
+        link, level, gram_thema, thema = request.form["lnk"], [x.strip().upper() for x in request.form["lvl"].split(",")], [x.strip().lower() for x in request.form["grm"].split(",")], [x.strip().lower() for x in request.form["thm"].split(",")]
         entry = {"link": link, "level": level, "grammar": gram_thema, "keywords":thema}
         jtemp = json_reader.get_json(json_reader.JSON_PATH)
         json_new, msg = json_reader.add_entry(jtemp, entry)
