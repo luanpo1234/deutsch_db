@@ -146,11 +146,12 @@ def search(df, search_terms):
     def check_match(df, search_terms, attrs):
         """
         Adds column of boolean to DF with matches for each attribute.
+        Case insensitive.
         """
         df_ = df.copy()
         for attr in attrs:
-            df_.loc[df_[attr].apply(lambda x: compare(x, search_terms[attr])), attr+"_match"]=True
-            df_.loc[~df_[attr].apply(lambda x: compare(x, search_terms[attr])), attr+"_match"]=False
+            df_.loc[df_[attr].apply(lambda x: compare([el.lower() for el in x], [s.lower() for s in search_terms[attr]])), attr+"_match"]=True
+            df_.loc[~df_[attr].apply(lambda x: compare([el.lower() for el in x], [s.lower() for s in search_terms[attr]])), attr+"_match"]=False
         print(df_)
         return df_
 
@@ -174,6 +175,13 @@ def df_to_html_pretty(df):
     #TODO: Não tá interpretando as tags HTML, tenta depois de novo
     #df_out["link"] = df_out["link"].apply(lambda x: "<a href = " + x + ">" + x + "</a>")
     return df_out
+
+def check_empty(lst, default="-keine-"):
+    checked_lst = [el for el in lst if el != ""]
+    if len (checked_lst) == 0:
+        return [default]
+    return checked_lst
+ 
 #res_df = df.loc[(df["level"]==search_terms_["level"]) & (search_terms_["grammar"][0] in df["grammar"].iloc[1])]
 # res_df = df.loc[(df["level"]==search_terms["level"]) & (len(df["grammar"].apply(lambda x: compare(x, search_terms["grammar"]))))]
 

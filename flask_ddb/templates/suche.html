@@ -4,12 +4,21 @@
 <h1>Suchbegriffe eingeben</h1>
 <div>
 <form action="#" method="post">
-	<p>Level:</p>
-	<p><input type="text" name="lvl" value="KEINE" /></p>
-	<p>Grammatisches Thema:</p>
-	<p><input type="text" name="grm" value="keine" /></p>
-	<p>Allgemeines Thema:</p>
-	<p><input type="text" name="thm" value="keine" /></p>
+	<p>Level (mehrfache Auswahl möglich):</p>
+	<p><input onClick="this.select();" type="text" class="level" name="lvl0" placeholder="Z.B. A1.1 oder C2"/>
+		<input onClick="this.select();" type="text" class="level" name="lvl1" />
+		<input onClick="this.select();" type="text" class="level" name="lvl2" />
+		</p>
+	<p>Grammatisches Thema (mehrfache Auswahl möglich):</p>
+	<p><input onClick="this.select();" type="text" class="grammar" name="grm0" />
+		<input onClick="this.select();" type="text" class="grammar" name="grm1" />
+		<input onClick="this.select();" type="text" class="grammar" name="grm2" />
+		</p>
+	<p>Allgemeines Thema (mehrfache Auswahl möglich):</p>
+	<p><input onClick="this.select();" type="text" class="theme" name="thm0" />
+		<input onClick="this.select();" type="text" class="theme" name="thm1" />
+		<input onClick="this.select();" type="text" class="theme" name="thm2" />
+		</p>
 	<p><input type="submit" value="Suchen" /></p>
 	</form>
 	</div>

@@ -2,125 +2,126 @@
     "5": {
         "link": "https://learningapps.org/7753584",
         "level": [
-            "A1",
-            "KEINE"
+            "A1", "A1.1", "A1.2",
+            "-keine-"
         ],
         "grammar": [
-            "konjugation",
-            "verben",
-            "keine"
+            "Konjugation",
+            "Verben",
+            "-keine-"
         ],
-        "keywords": ["keine"]
+        "keywords": ["-keine-"]
     },
     "6": {
         "link": "https://learningapps.org/10281807",
         "level": [
-            "A1",
-            "A2",
-            "KEINE"
+            "A1", "A1.1", "A1.2",
+            "A2", "A2.1", "A2.2",
+            "-keine-"
         ],
         "grammar": [
-            "verben",
-            "keine"
+            "Verben",
+            "-keine-"
         ],
-        "keywords": ["keine"]
+        "keywords": ["-keine-"]
     },
     "9": {
         "link": "https://learningapps.org/17424987",
         "level": [
-            "A1",
-            "KEINE"
+            "A1", "A1.1", "A1.2",
+            "-keine-"
         ],
-        "grammar": ["keine"],
+        "grammar": ["-keine-"],
         "keywords": [
-            "uhrzeiten",
-            "keine"
+            "Uhrzeiten",
+            "-keine-"
         ]
     },
     "10": {
         "link": "https://learningapps.org/18427094",
         "level": [
-            "A1",
-            "KEINE"
+            "A1", "A1.1", "A1.2",
+            "-keine-"
         ],
         "grammar": [
-            "akkusativ",
-            "keine"
+            "Akkusativ",
+            "-keine-"
         ],
-        "keywords": ["keine"]
+        "keywords": ["-keine-"]
     },
     "15": {
         "link": "https://deutsch-lernen.zum.de/wiki/Adjektive_-_Gegens%C3%A4tze_(Interaktive_%C3%9Cbungen)",
         "level": [
-            "A2",
-            "KEINE"
+            "A2", "A2.1", "A2.2",
+            "-keine-"
         ],
         "grammar": [
-            "adjektive",
-            "keine"
+            "Adjektive",
+            "-keine-"
         ],
         "keywords": [
-            "gegensätze",
-            "keine"
+            "Gegensätze",
+            "-keine-"
         ]
     },
     "16": {
         "link": "http://www.spiegel.de",
         "level": [
-            "A2",
-            "KEINE"
+            "A2", "A2.1", "A2.2",
+            "-keine-"
         ],
         "grammar": [
-            "trennbare verben",
-            "keine"
+            "trennbare Verben",
+            "Verben",
+            "-keine-"
         ],
         "keywords": [
-            "keine"
+            "-keine-"
         ]
     },
     "17": {
         "link": "https://learningapps.org/13376644",
         "level": [
-            "A1",
-            "A2",
-            "KEINE"
+            "A1", "A1.1", "A1.2",
+            "A2", "A2.1", "A2.2",
+            "-keine-"
         ],
         "grammar": [
-            "keine"
+            "-keine-"
         ],
         "keywords": [
-            "arzt",
-            "keine"
+            "Arzt",
+            "-keine-"
         ]
     },
     "18": {
         "link": "https://learningapps.org/4642881",
         "level": [
-            "A2",
-            "B1",
-            "KEINE"
+            "A2", "A2.1", "A2.2",
+            "B1", "B1.1", "B1.2",
+            "-keine-"
         ],
         "grammar": [
-            "possessivpronomen",
-            "keine"
+            "Possessivpronomen",
+            "-keine-"
         ],
         "keywords": [
-            "keine"
+            "-keine-"
         ]
     },
     "19": {
         "link": "http://www.duden.de",
         "level": [
-            "B2",
-            "C1",
-            "KEINE"
+            "B2", "B2.1", "B2.2",
+            "C1", "C1.1", "C1.2",
+            "-keine-"
         ],
         "grammar": [
-            "konjunktiv ii",
-            "keine"
+            "Konjunktiv II",
+            "-keine-"
         ],
         "keywords": [
-            "keine"
+            "-keine-"
         ]
     }
 }
