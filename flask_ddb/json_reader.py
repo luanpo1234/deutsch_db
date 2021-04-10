@@ -8,6 +8,7 @@ import pandas as pd
 import requests
 from requests.exceptions import ConnectionError
 import json
+import re
 
 JSON_PATH = "flask_ddb\json.json"
 KEYWORDS = ["schule", "arbeit", "haushalt", "none"]
@@ -170,13 +171,23 @@ def search(df, search_terms):
     #res_df = df.loc[(df["level"]==search_terms["level"]) & ((df["grammar"].apply(lambda x: compare(x, search_terms["grammar"]))) | (df["keywords"].apply(lambda x: compare(x, search_terms["keywords"]))))]
     return res_df
 
-def df_to_html_pretty(df):
+def df_to_html_pretty(df, to_replace=["-keine-", ", ]", "[", "]"]):
+    """
+    DF to HTML. Replaces strings in to_replace with empty string.
+    Capitalizes table header.
+    """
     df_out = df.to_html(render_links=True)
-    #TODO: Não tá interpretando as tags HTML, tenta depois de novo
-    #df_out["link"] = df_out["link"].apply(lambda x: "<a href = " + x + ">" + x + "</a>")
+    for el in to_replace:
+        df_out = df_out.replace(el, "")
+    
+    for el in re.findall(r'<th>(.*?)</th>', df_out):
+        df_out = df_out.replace(el, el.capitalize())
     return df_out
 
 def check_empty(lst, default="-keine-"):
+    """
+    Replaces empty values in list with default string.
+    """
     checked_lst = [el for el in lst if el != ""]
     if len (checked_lst) == 0:
         return [default]
