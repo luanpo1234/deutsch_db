@@ -14,7 +14,8 @@ def home():
 @app.route("/suche/", methods=["POST", "GET"])
 def suche():
     if request.method == "POST":
-        level, gram_thema, thema = json_reader.check_empty([request.form["lvl0"], request.form["lvl1"], request.form["lvl2"]]), json_reader.check_empty([request.form["grm0"], request.form["grm1"], request.form["grm2"]]), json_reader.check_empty([request.form["thm0"], request.form["thm1"], request.form["thm2"]]) #TODO aqui e abaixo: função pros processamentos das strings
+        level, gram_thema, thema = json_reader.check_empty(request.form["selectedItemsValue"].split(",")), json_reader.check_empty([request.form["grm0"], request.form["grm1"], request.form["grm2"]]), json_reader.check_empty([request.form["thm0"], request.form["thm1"], request.form["thm2"]]) #TODO aqui e abaixo: função pros processamentos das strings
+        print("selectedItems", request.form["selectedItemsValue"])
         test_search = {"level": level, "grammar": gram_thema, "keywords":thema}
         jtemp = json_reader.get_json(json_reader.JSON_PATH)
         df, error_indexes = json_reader.create_df(jtemp)

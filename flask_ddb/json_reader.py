@@ -153,7 +153,6 @@ def search(df, search_terms):
         for attr in attrs:
             df_.loc[df_[attr].apply(lambda x: compare([el.lower() for el in x], [s.lower() for s in search_terms[attr]])), attr+"_match"]=True
             df_.loc[~df_[attr].apply(lambda x: compare([el.lower() for el in x], [s.lower() for s in search_terms[attr]])), attr+"_match"]=False
-        print(df_)
         return df_
 
     def build_query(df_search, attrs=["level", "keywords", "grammar"], conns=['&','|']):

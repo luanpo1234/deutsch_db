@@ -3,23 +3,26 @@
 {% block content %}
 <h1>Suchbegriffe eingeben</h1>
 <div>
-<form action="#" method="post">
-	<p>Level (mehrfache Auswahl möglich):</p>
-	<p><input onClick="this.select();" type="text" class="level" name="lvl0" placeholder="Z.B. A1.1 oder C2"/>
-		<input onClick="this.select();" type="text" class="level" name="lvl1" />
-		<input onClick="this.select();" type="text" class="level" name="lvl2" />
+	<form action="#" method="post">
+		<p>Level (mehrfache Auswahl möglich):</p>
+		<p>
+		<div>
+			<ul id="selectedItems"></ul>
+			<input type="hidden" id="selectedItemsValue" name="selectedItemsValue"  />
+			<input type="text" class="level" name="lvl0" placeholder="Z.B. A1.1 oder C2" />
+		</div>
 		</p>
-	<p>Grammatisches Thema (mehrfache Auswahl möglich):</p>
-	<p><input onClick="this.select();" type="text" class="grammar" name="grm0" />
-		<input onClick="this.select();" type="text" class="grammar" name="grm1" />
-		<input onClick="this.select();" type="text" class="grammar" name="grm2" />
+		<p>Grammatisches Thema (mehrfache Auswahl möglich):</p>
+		<p><input onClick="this.select();" type="text" class="grammar" name="grm0" />
+			<input onClick="this.select();" type="text" class="grammar" name="grm1" />
+			<input onClick="this.select();" type="text" class="grammar" name="grm2" />
 		</p>
-	<p>Allgemeines Thema (mehrfache Auswahl möglich):</p>
-	<p><input onClick="this.select();" type="text" class="theme" name="thm0" />
-		<input onClick="this.select();" type="text" class="theme" name="thm1" />
-		<input onClick="this.select();" type="text" class="theme" name="thm2" />
+		<p>Allgemeines Thema (mehrfache Auswahl möglich):</p>
+		<p><input onClick="this.select();" type="text" class="theme" name="thm0" />
+			<input onClick="this.select();" type="text" class="theme" name="thm1" />
+			<input onClick="this.select();" type="text" class="theme" name="thm2" />
 		</p>
-	<p><input type="submit" value="Suchen" /></p>
+		<p><input type="submit" value="Suchen" /></p>
 	</form>
-	</div>
+</div>
 {% endblock %}
