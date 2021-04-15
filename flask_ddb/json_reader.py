@@ -9,6 +9,8 @@ import requests
 from requests.exceptions import ConnectionError
 import json
 import re
+from sqlalchemy import create_engine
+import pymysql
 
 JSON_PATH = "flask_ddb\json.json"
 KEYWORDS = ["schule", "arbeit", "haushalt", "none"]
@@ -20,6 +22,9 @@ def get_json(json_path):
     with open(JSON_PATH) as json_file:
         json_dict = json.load(json_file)
     return json_dict
+
+def get_sql_data(sql_path):
+    pass
 
 def check_entry(entry, atts=["link", "keywords", "level", "grammar"]):
     """
@@ -104,6 +109,9 @@ def create_df(json_dict, validate_entries=False):
     df['keywords'] = df['keywords'].apply(lambda l: exclude_empty_str(l))
     df['grammar'] = df['grammar'].apply(lambda l: exclude_empty_str(l))
     return df, error_indexes
+
+def add_entry_sql(db_conn, entry):
+    pass
 
 def add_entry(json_dict, entry): #, df):
     """
