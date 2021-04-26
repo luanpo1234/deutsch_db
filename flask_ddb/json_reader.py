@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 """
 Set-ExecutionPolicy Unrestricted -Scope Process
@@ -9,7 +8,8 @@ import requests
 from requests.exceptions import ConnectionError
 import json
 import re
-from sqlalchemy import create_engine
+from sqlalchemy import MetaData, create_engine
+from sqlalchemy.sql import select
 import pymysql
 
 JSON_PATH = "flask_ddb\json.json"
@@ -78,18 +78,40 @@ def check_entry(entry, atts=["link", "keywords", "level", "grammar"]):
         msg += "No problems found." + "<br />"
         print("No problems found.")
     return not errors, msg
-    
+
+def exclude_empty_str(lst):
+    """
+    Returns list without empty strings.
+    """
+    return [el for el in lst if el.strip() != ""]
+
+def create_df_from_sql():
+    engine = create_engine("mariadb+mariadbconnector://testUser@127.0.0.1:3306/test")
+    conn = engine.connect()
+    df = pd.read_sql_query(
+        """
+        SELECT url.urlval as "link", group_concat(DISTINCT(level.levelval) separator ",") as "level", group_concat(DISTINCT(grammarkeywords.grammarval) separator ",") as "grammar", group_concat(DISTINCT(tkeywords.tval) separator ",") as "keywords" FROM url
+        inner join url_grammar on url.urlid = url_grammar.urlid
+        inner join url_level on url.urlid = url_level.urlid
+        inner join url_tkeywords on url.urlid = url_tkeywords.urlid
+        inner join grammarkeywords on grammarkeywords.grammarid = url_grammar.grammarid
+        inner join tkeywords on tkeywords.tid = url_tkeywords.tid
+        inner join level on level.levelid = url_level.levelid
+        group by url.urlid;
+        """, conn)
+    df['level'] = df['level'].apply(lambda x: x.split(","))
+    df['keywords'] = df['keywords'].apply(lambda x: x.split(","))
+    df['grammar'] = df['grammar'].apply(lambda x: x.split(",")) #TODO: tá retornando uma vírgula no começo
+#    df['level'] = df['level'].apply(lambda l: exclude_empty_str(l))
+ #   df['keywords'] = df['keywords'].apply(lambda l: exclude_empty_str(l))
+  #  df['grammar'] = df['grammar'].apply(lambda l: exclude_empty_str(l))
+    return df
 
 def create_df(json_dict, validate_entries=False):
     """
     Creates pandas DataFrame with the json entries that don't have errors.
     Returns pandas DF and list of error indexes.
     """
-    def exclude_empty_str(lst):
-        """
-        Returns list without empty strings.
-        """
-        return [el for el in lst if el != ""]
     japproved = {}
     error_indexes = []
     for key in json_dict:
@@ -209,3 +231,9 @@ def check_empty(lst, default="-keine-"):
 #test_search = {"level": "A1", "grammar": ["konjugation"], "keywords":[]}
 #df2 = search(df, test_search)
 #print(df2)
+
+jtemp = get_json(JSON_PATH)
+df2, e = create_df(jtemp)
+df = create_df_from_sql()
+print(df)
+print(df2)

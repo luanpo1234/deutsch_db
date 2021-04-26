@@ -17,8 +17,8 @@ def suche():
         level, gram_thema, thema = json_reader.check_empty(request.form["selectedItemsValue"].split(",")), json_reader.check_empty([request.form["grm0"], request.form["grm1"], request.form["grm2"]]), json_reader.check_empty([request.form["thm0"], request.form["thm1"], request.form["thm2"]]) #TODO aqui e abaixo: função pros processamentos das strings
         print("selectedItems", request.form["selectedItemsValue"])
         test_search = {"level": level, "grammar": gram_thema, "keywords":thema}
-        jtemp = json_reader.get_json(json_reader.JSON_PATH)
-        df, error_indexes = json_reader.create_df(jtemp)
+        #jtemp = json_reader.get_json(json_reader.JSON_PATH)
+        df = json_reader.create_df_from_sql()
         df_res = json_reader.search(df, test_search)
         str_df_res = json_reader.df_to_html_pretty(df_res)
         return render_template("result.html", content=str_df_res)
