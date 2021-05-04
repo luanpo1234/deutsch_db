@@ -8,9 +8,10 @@ import requests
 from requests.exceptions import ConnectionError
 import json
 import re
-from sqlalchemy import MetaData, create_engine
+from sqlalchemy import MetaData, create_engine, text
 from sqlalchemy.sql import select
 import pymysql
+from fuzzywuzzy import fuzz
 
 JSON_PATH = "flask_ddb\json.json"
 KEYWORDS = ["schule", "arbeit", "haushalt", "none"]
@@ -92,10 +93,7 @@ def create_df_from_sql():
     df = pd.read_sql_query(query, conn)
     df['level'] = df['level'].apply(lambda x: x.split(","))
     df['keywords'] = df['keywords'].apply(lambda x: x.split(","))
-    df['grammar'] = df['grammar'].apply(lambda x: x.split(",")) #TODO: tá retornando uma vírgula no começo
-#    df['level'] = df['level'].apply(lambda l: exclude_empty_str(l))
- #   df['keywords'] = df['keywords'].apply(lambda l: exclude_empty_str(l))
-  #  df['grammar'] = df['grammar'].apply(lambda l: exclude_empty_str(l))
+    df['grammar'] = df['grammar'].apply(lambda x: x.split(","))
     return df
 
 def create_df(json_dict, validate_entries=False):
@@ -212,7 +210,30 @@ def check_empty(lst, default="-keine-"):
     if len (checked_lst) == 0:
         return [default]
     return checked_lst
- 
+
+def preprocess_query(proc, q, min_ratio=80, db="mariadb+mariadbconnector://testUser@127.0.0.1:3306/test"):
+    """
+    q: query str
+    min_ratio: min ratio float
+    db: str with address of sql db
+    proc: stored procedure in db
+
+    Cleans query string, searches for closest match in sql db. If there is no match with min_ratio, 
+    returns q, else returns match.
+    """
+    engine = create_engine(db)
+    conn = engine.connect()
+    query = "call {}".format(proc)
+    res = conn.execute(text(query))
+    res_lst = res.fetchall()
+    term_lst = [el[0] for el in res_lst]
+    for term in term_lst:
+        if fuzz.ratio(q.lower(), term.lower()) > min_ratio: #TODO: aqui ele pega o primeiro >75, não o melhor match
+            return term
+    return q
+
+print(preprocess_query("select_all_grammar", "pretaeritum"))
+
 #res_df = df.loc[(df["level"]==search_terms_["level"]) & (search_terms_["grammar"][0] in df["grammar"].iloc[1])]
 # res_df = df.loc[(df["level"]==search_terms["level"]) & (len(df["grammar"].apply(lambda x: compare(x, search_terms["grammar"]))))]
 
@@ -223,8 +244,12 @@ def check_empty(lst, default="-keine-"):
 #df2 = search(df, test_search)
 #print(df2)
 
-jtemp = get_json(JSON_PATH)
-df2, e = create_df(jtemp)
-df = create_df_from_sql()
-print(df)
-print(df2)
+#jtemp = get_json(JSON_PATH)
+#df2, e = create_df(jtemp)
+#df = create_df_from_sql()
+#print(df)
+#print(df2)
+
+#query = "call {}(:queryVal)".format(proc)
+    #res = conn.execute(text(query), queryVal=q)
+    #term = res.fetchall()[0][0]
