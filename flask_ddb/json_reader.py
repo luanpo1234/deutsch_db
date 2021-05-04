@@ -88,17 +88,8 @@ def exclude_empty_str(lst):
 def create_df_from_sql():
     engine = create_engine("mariadb+mariadbconnector://testUser@127.0.0.1:3306/test")
     conn = engine.connect()
-    df = pd.read_sql_query(
-        """
-        SELECT url.urlval as "link", group_concat(DISTINCT(level.levelval) separator ",") as "level", group_concat(DISTINCT(grammarkeywords.grammarval) separator ",") as "grammar", group_concat(DISTINCT(tkeywords.tval) separator ",") as "keywords" FROM url
-        inner join url_grammar on url.urlid = url_grammar.urlid
-        inner join url_level on url.urlid = url_level.urlid
-        inner join url_tkeywords on url.urlid = url_tkeywords.urlid
-        inner join grammarkeywords on grammarkeywords.grammarid = url_grammar.grammarid
-        inner join tkeywords on tkeywords.tid = url_tkeywords.tid
-        inner join level on level.levelid = url_level.levelid
-        group by url.urlid;
-        """, conn)
+    query = "call concat_select"
+    df = pd.read_sql_query(query, conn)
     df['level'] = df['level'].apply(lambda x: x.split(","))
     df['keywords'] = df['keywords'].apply(lambda x: x.split(","))
     df['grammar'] = df['grammar'].apply(lambda x: x.split(",")) #TODO: tá retornando uma vírgula no começo
@@ -200,7 +191,7 @@ def search(df, search_terms):
     #res_df = df.loc[(df["level"]==search_terms["level"]) & ((df["grammar"].apply(lambda x: compare(x, search_terms["grammar"]))) | (df["keywords"].apply(lambda x: compare(x, search_terms["keywords"]))))]
     return res_df
 
-def df_to_html_pretty(df, to_replace=["-keine-", ", ]", "[", "]"]):
+def df_to_html_pretty(df, to_replace=["-keine-,", "-keine-", "]", "[", "]"]):
     """
     DF to HTML. Replaces strings in to_replace with empty string.
     Capitalizes table header.

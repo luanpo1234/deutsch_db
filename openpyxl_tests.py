@@ -42,7 +42,7 @@ for n in range(2,15):
 
 with open(PATH+"teste.txt", "w+", encoding="utf-8") as file:
     file.write(res)
-
+    
 def toss(n, k):
     f = math.factorial
     return (f(n)/(f(k)*f(n-k)))*2**(-n)

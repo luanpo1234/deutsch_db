@@ -75,12 +75,14 @@ def push_to_sql(json_dict, conn):
     trans.commit()
     conn.close()
 
-def excel_to_dict(excel_path, cols=["URL", "LEVELS", "THEME_KEYWORDS", "GRAMMAR_KEYWORDS"]):
+def excel_to_dict(excel_path, cols=["URL", "LEVELS", "THEME_KEYWORDS", "GRAMMAR_KEYWORDS"], default="-keine-"):
     df = pd.read_excel(EXCEL_PATH)
     d_df = df.to_dict()
     d_unique = {}
     for col in cols:
         lst = [el.split(",") for el in df[col].unique()]
+        if default not in lst:
+            lst.append(default)
         lst = list(itertools.chain.from_iterable(lst))
         lst = [el.strip() for el in lst]
         d_unique[col] = lst
