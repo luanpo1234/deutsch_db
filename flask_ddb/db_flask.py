@@ -38,18 +38,5 @@ def einfuegen():
     else:
         return render_template("einfuegen.html")
 
-# @app.route("/<usr>/")
-# def user(usr):
-    # return f"<h1>{usr}</h1>"
-
 if __name__ == "__main__":
     app.run(host='192.168.0.70', port=5000, debug=True)
-    
-
-# @app.route("/<name>")
-# def user(name):
-#     return f"<h1>Hello {name}!</h1>"
-
-# @app.route("/admin/")
-# def admin():
-#     return redirect(url_for("user", name="Admin"))
