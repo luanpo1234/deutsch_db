@@ -40,4 +40,4 @@ def einfuegen():
 """
 
 if __name__ == "__main__":
-    app.run(host='192.168.0.70', port=5000, debug=True)
+    app.run(port=5000)

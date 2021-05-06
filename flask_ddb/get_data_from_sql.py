@@ -3,6 +3,7 @@ from sqlalchemy.sql import select
 import pymysql
 import itertools
 import pandas as pd
+import api
 
 EXCEL_PATH = "flask_ddb\Book1.xlsx"
 DF = pd.read_excel(EXCEL_PATH)
