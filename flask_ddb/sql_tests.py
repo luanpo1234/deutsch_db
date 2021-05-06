@@ -1,48 +1,20 @@
 from sqlalchemy import MetaData, create_engine
 from sqlalchemy.sql import select
 import pymysql
-import pandas as pd
 import itertools
 import pandas as pd
 
 EXCEL_PATH = "flask_ddb\Book1.xlsx"
 DF = pd.read_excel(EXCEL_PATH)
 
-ENGINE = create_engine("mariadb+mariadbconnector://testUser@127.0.0.1:3306/test")
+CONNECT_STR = api.CONNECT_STR
+ENGINE = create_engine(CONNECT_STR)
 CONN = ENGINE.connect()
 META_DATA = MetaData(bind=CONN)
 META_DATA.reflect()
 
-def push_to_sql(json_dict, conn):
-    trans = conn.begin()
-    for v in json_dict.values():
-        url = v["link"]
-        for el in v["grammar"]:
-            print(el)
-            conn.execute(
-                f"""
-                SELECT grammarid
-                FROM grammarkeywords
-                WHERE grammarval = "{el}"
-                INTO @gramid;
-                """)
-            conn.execute(
-                f"""
-                SELECT urlid
-                FROM url
-                WHERE urlval = "{url}"
-                INTO @urlid;
-                """)
-            conn.execute(
-                f"""
-                INSERT IGNORE INTO url_grammar (urlid, grammarid)
-                VALUES (@urlid, @gramid);
-                """)
-    trans.commit()
-    conn.close()
-
 def excel_to_dict(excel_path, cols=["URL", "LEVELS", "THEME_KEYWORDS", "GRAMMAR_KEYWORDS"], default="-keine-"):
-    df = pd.read_excel(EXCEL_PATH)
+    df = pd.read_excel(EXCEL_PATH).fillna("-keine-")
     d_df = df.to_dict()
     d_unique = {}
     for col in cols:
@@ -52,6 +24,11 @@ def excel_to_dict(excel_path, cols=["URL", "LEVELS", "THEME_KEYWORDS", "GRAMMAR_
         lst = list(itertools.chain.from_iterable(lst))
         lst = [el.strip() for el in lst]
         d_unique[col] = lst
+    for k0 in d_df:
+        if k0 != cols[0]:   #Default doesn't apply to URL
+            for k1 in d_df[k0]:
+                if default not in d_df[k0][k1]:
+                    d_df[k0][k1] += ", " + default
     return d_unique, d_df
 
 def dict_to_sql(dcts, conn, keys={

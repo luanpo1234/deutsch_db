@@ -17,7 +17,7 @@ JSON_PATH = "flask_ddb\json.json"
 KEYWORDS = ["schule", "arbeit", "haushalt", "none"]
 GRAM_KEYWORDS = ["dativ", "akkusativ", "präpositionen", "konjugation", "verben"]
 LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"]
-
+CONNECT_STR = "mariadb+mariadbconnector://admin:PASSWORD@deutsch-db.cuno5ecnfsgi.eu-central-1.rds.amazonaws.com:3306/deutsch-db"
 
 def get_json(json_path):
     with open(JSON_PATH) as json_file:
@@ -87,13 +87,15 @@ def exclude_empty_str(lst):
     return [el for el in lst if el.strip() != ""]
 
 def create_df_from_sql():
-    engine = create_engine("mariadb+mariadbconnector://testUser@127.0.0.1:3306/test")
+    engine = create_engine(CONNECT_STR)
+    #engine = create_engine("mariadb+mariadbconnector://testUser@127.0.0.1:3306/test")
     conn = engine.connect()
     query = "call concat_select"
     df = pd.read_sql_query(query, conn)
     df['level'] = df['level'].apply(lambda x: x.split(","))
     df['keywords'] = df['keywords'].apply(lambda x: x.split(","))
     df['grammar'] = df['grammar'].apply(lambda x: x.split(","))
+    print(df["level"])
     return df
 
 def create_df(json_dict, validate_entries=False):
@@ -194,7 +196,7 @@ def df_to_html_pretty(df, to_replace=["-keine-,", "-keine-", "]", "[", "]"]):
     DF to HTML. Replaces strings in to_replace with empty string.
     Capitalizes table header.
     """
-    df_out = df.to_html(render_links=True)
+    df_out = df.to_html(render_links=True, index=False)
     for el in to_replace:
         df_out = df_out.replace(el, "")
     
@@ -211,7 +213,7 @@ def check_empty(lst, default="-keine-"):
         return [default]
     return checked_lst
 
-def preprocess_query(proc, q, min_ratio=80, db="mariadb+mariadbconnector://testUser@127.0.0.1:3306/test"):
+def preprocess_query(proc, q, min_ratio=80, db=CONNECT_STR):
     """
     q: query str
     min_ratio: min ratio float
@@ -232,7 +234,7 @@ def preprocess_query(proc, q, min_ratio=80, db="mariadb+mariadbconnector://testU
             return term
     return q
 
-print(preprocess_query("select_all_grammar", "pretaeritum"))
+#print(preprocess_query("select_all_grammar", "pretaeritum"))
 
 #res_df = df.loc[(df["level"]==search_terms_["level"]) & (search_terms_["grammar"][0] in df["grammar"].iloc[1])]
 # res_df = df.loc[(df["level"]==search_terms["level"]) & (len(df["grammar"].apply(lambda x: compare(x, search_terms["grammar"]))))]

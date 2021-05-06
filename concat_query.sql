@@ -3,7 +3,6 @@
         inner join url_level on url.urlid = url_level.urlid
         inner join url_tkeywords on url.urlid = url_tkeywords.urlid
         inner join grammarkeywords on grammarkeywords.grammarid = url_grammar.grammarid
-        inner join tkeywords on tkeywords.tid =concat_select url_tkeywords.tid
+        inner join tkeywords on tkeywords.tid = url_tkeywords.tid
         inner join level on level.levelid = url_level.levelid
-		  WHERE grammarkeywords.GrammarVal ='Passiv' AND level.levelval = 'A2.2'
         group by url.urlid;
